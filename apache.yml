@@ -1,0 +1,5 @@
+---
+ - name: First role yaml file
+   hosts: web01
+   roles: 
+    - apache

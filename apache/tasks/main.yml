@@ -1,0 +1,16 @@
+---
+# tasks file for apache
+- name: Apache Installing
+  yum:
+   name: "{{pkg}}"
+   with_pkg: 
+     - apache
+     - mysql
+   state: latest
+
+- name: Define docroot
+#  copy: src=/root/index.html dest=/var/www/html/ mode=0644
+  copy:
+    src: /root/index.html
+    dest: /var/www/html
+    mode: '0644'
