@@ -8,11 +8,10 @@
     - httpd
     - mysql
     - elinks
-    - mariadb-server
 - name: Service apache Start
   service:
     name: httpd
-    state: stopped
+    state: started
 
 - name: Define docroot
 #  copy: src=/root/index.html dest=/var/www/html/ mode=0644
@@ -21,12 +20,8 @@
     dest: /var/www/html
     mode: '0644'
 
-- name: Gathering service facts
-  service_facts:
-  register: services_state
-- debug: 
-   var: ansible_facts.services["httpd.service"].state
+- name: Service Facts
+    service_facts:
+
 - debug:
-   var: ansible_facts.services["mariadb.service"].state
-#- debug:
-#   var: ansible_facts.services
+    var: ansible_facts
