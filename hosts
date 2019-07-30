@@ -18,7 +18,7 @@
 # Ex 2: A collection of hosts belonging to the 'webservers' group
 
 [webservers]
-web01 ansible_ssh_host=18.130.213.217
+web01 ansible_ssh_host=3.8.152.120
 ## alpha.example.org
 ## beta.example.org
 ## 192.168.1.100
