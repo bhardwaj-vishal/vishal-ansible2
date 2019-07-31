@@ -1,7 +1,7 @@
 ---
  - name: First role yaml file
    hosts: web01
-   gather_facts: yes
+   gather_facts: no
    roles: 
     - apache
  

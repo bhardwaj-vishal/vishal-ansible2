@@ -5,7 +5,20 @@
 #  service:
 #     name: httpd
 #     state: stopped
+#- name: run shell Script on remote host
+#  script: /root/script/script.sh
+ # register: output_log
+ # ignore_errors: yes
 
+#- name: copy the output to a local file
+#  copy:
+ #   content: "{{ output_log.stdout }}"
+  #  dest: "/tmp/log.txt"
+  #delegate_to: localhost
+
+  #args:
+   #executable: /bin/bash
+   #chdir: /var/log/httpd/
 #- name: sleep for 15 seconds and continue with play
 #  wait_for:
 #    timeout: 1
@@ -39,10 +52,14 @@
  # when: "output.find('v=' ~ unknown) == -1"
  # notify: restart httpd
 
-
-
-- name: check
-  service: name=httpd state=restarted
+#- name: get error log
+#  service: name=httpd state=restarted
+#  script: /root/script/script.sh
+#  register: output_log
+#  ignore_errors: yes
+#  copy:  content= "{{ output_log.stdout }}" dest= "/tmp/log.txt"
+#  delegate_to: localhost
+- import_tasks: tasks/sometasks.yml
   #notify: restart httpd
   #when: output.msg == 'output1 unknown'
   when: output.msg == 'output1 unknown' or  port_check.failed == true
