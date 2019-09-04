@@ -1,0 +1,7 @@
+---
+- name: MY demo site
+  hosts: web01
+  tasks:
+  - name: Output
+    debug: msg="{{op.stdout}}"
+

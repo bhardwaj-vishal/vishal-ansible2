@@ -1,0 +1,37 @@
+---
+#tasks file for diskCheck
+#Print the Dictionary
+- debug:
+    msg: "{{ansible_mounts}}"
+
+
+#- debug: 
+#    msg: item.mount
+#  with_items: "{{ansible_mounts}}"
+    #msg: "{{ansible_mounts}}"
+#
+# Parsing through Variable Dictionary
+#- debug:
+ #   msg: "Mount Point {{item.mount}} is at {{item.block_used/item.block_total*100}} percent "
+ # loop: "{{ansible_mounts}}"
+ - debug:
+     msg: "Mount Point {{item.mount}} is consumed {{item.block_used/item.block_total*100}} percent "
+    loop: "{{ansible_mounts}}"
+#command: touch /tmp/txt1
+    when: item.block_used/item.block_total*100 >= 40.00
+    register: op
+    no_log: True
+
+
+#- debug:
+#   msg: "{{op.results}}"
+
+- debug:
+    msg: "{{op.results|map(attribute='msg')|list}}"
+  register: op2
+
+- debug:
+    var:  op2
+
+- shell: echo "hiii" > /tmp/abc.txt
+  when:  "'Mount' in op2.msg"

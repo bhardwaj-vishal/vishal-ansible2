@@ -1,0 +1,57 @@
+---
+# tasks file for apache
+- name: Apache Installing
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - httpd
+    - mysql
+    - elinks
+    - mariadb-server
+- name: Service apache Start
+ # service:
+  #  name: httpd
+  #  state: stopped
+  notify:
+  - restart httpd
+
+- name: Define docroot
+#  copy: src=/root/index.html dest=/var/www/html/ mode=0644
+  copy:
+    src: /root/index.html
+    dest: /var/www/html
+    mode: '0644'
+
+#- name: verify httpd-server is listening on 80
+ # wait_for: port=80 timeout=1
+
+- name: Gathering service facts
+  service_facts:
+#  register: services_state
+- debug: 
+   var: ansible_facts.services["httpd.service"].state
+  register: output
+
+- debug: 
+   var: output
+
+#- debug: msg="httpd is not running"
+#  when: output.stdout is search('unknown')
+#  notify: restart httpd
+- debug:
+   msg: "httpd is not running"
+  when: '"unknown" in output'
+#  when: output is search(""unknown",")
+  notify: restart httpd
+    
+  # var: output
+ # when: ansible_facts.services["httpd.service"].state in search("unknown")
+#  when: ansible_facts.services["httpd.service"].state == "unknown"
+   
+    #- restart httpd
+
+#- debug:
+#   var: ansible_facts.services["mariadb.service"].state
+#- debug:
+#   var: ansible_facts.services

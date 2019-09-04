@@ -1,0 +1,27 @@
+---
+# tasks file for apache
+- name: Apache Installing
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - httpd
+    - mysql
+    - elinks
+- name: Service apache Start
+  service:
+    name: httpd
+    state: started
+
+- name: Define docroot
+#  copy: src=/root/index.html dest=/var/www/html/ mode=0644
+  copy:
+    src: /root/index.html
+    dest: /var/www/html
+    mode: '0644'
+
+- name: Service Facts
+    service_facts:
+
+- debug:
+    var: ansible_facts

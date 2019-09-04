@@ -1,0 +1,13 @@
+---
+- name: main
+  hosts: web01
+  tasks: 
+    - name: "test"
+      set_fact: mount = "{{ ansible_mounts| first }}"
+      register: mount1
+    - set_fact: disk_usage= "{{ mount.size_total - mount.size_available }}"
+      #loop: {{"ansible_mounts"}}
+      register: disk2
+
+    - debug:
+        var: disk2

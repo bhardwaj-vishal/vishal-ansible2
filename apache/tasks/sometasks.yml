@@ -1,6 +1,6 @@
 ---
 - name: run shell Script on remote host
-  script: /root/script/script.sh
+  script: /etc/ansible/apache/tasks/script.sh
   register: output_log
   ignore_errors: yes
 #
@@ -12,5 +12,21 @@
  
 - name: Try to restart httpd 
   service: name=httpd state=restarted
-#
+ 
+- wait_for:
+    timeout: 5
+# Validating the Servcie Again
+
+- name: check httpd service facts
+  service_facts:
+  register: check
+
+- debug:
+   msg: check {{ ansible_facts.services["httpd.service"].state }}
+  register: output2
+
+
+- local_action: shell echo "service restarted by ansibile" >> /tmp/msg1.txt
+  #notify: restart httpd
+  when: output2.msg == 'check running'
 #

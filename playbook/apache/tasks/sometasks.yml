@@ -1,0 +1,16 @@
+---
+- name: run shell Script on remote host
+  script: /root/script/script.sh
+  register: output_log
+  ignore_errors: yes
+#
+- name: copy the output to a local file
+  copy:
+   content: "{{ output_log.stdout }}"
+   dest: "/tmp/log.txt"
+  delegate_to: localhost
+ 
+- name: Try to restart httpd 
+  service: name=httpd state=restarted
+#
+#

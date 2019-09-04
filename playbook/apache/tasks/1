@@ -1,0 +1,44 @@
+---
+# tasks file for apache
+
+- name: service start 
+  service:
+     name: httpd
+     state: started
+
+- name: sleep for 15 seconds and continue with play
+  wait_for:
+    timeout: 1
+#- name: verify httpd-server is listening on 80
+ # wait_for: port=80 timeout=1
+
+- name: Gathering service facts
+  service_facts:
+  register: output1
+
+- debug: 
+   var: output1 {{ ansible_facts.services["httpd.service"].state }}
+  register: output
+
+#- debug:
+#   var: output1
+
+- debug:
+   var: output
+
+
+#- debug:
+ #  msg: "httpd is not running"
+ # when: "output.find('v=' ~ unknown) == -1"
+ # notify: restart httpd
+
+
+
+
+#- debug:
+#   msg: "httpd is not running"
+#  when: '"unknown" is search output.ansible_facts.services'
+#  notify: restart httpd
+    
+   
+

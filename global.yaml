@@ -1,0 +1,3 @@
+---
+- import_playbook: service.yaml
+- import_playbook: service2.yaml

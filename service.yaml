@@ -1,0 +1,24 @@
+---
+- name: MY demo site
+  hosts: web01
+  tasks:
+  - name: service restarit
+  
+    command: service httpd start
+ # - name: service stopped
+  #  service: name=httpd state=stopped
+  - name: variable values
+    command: df -h
+    register: op
+ # - name: show output
+  #  debug: msg="{{op.stdout}}"
+    
+ # - debug: msg="{{op.start}}"
+
+  #- name: Show Mounts Points
+   # debug: msg="{{ansible_mount}}"
+
+  #- debug:
+   #  msg: "{{item.mount}}"
+   # with_items: "{{ansible_mounts}}"
+#

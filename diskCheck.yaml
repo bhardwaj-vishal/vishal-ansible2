@@ -1,0 +1,6 @@
+---
+ - name: DiskCheck role yaml file
+   hosts: web01
+ #  gather_facts: no
+   roles:
+    - diskCheck

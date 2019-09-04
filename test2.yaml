@@ -1,0 +1,19 @@
+---
+ - hosts: "{{ web01 }}"
+   user: gamesroot
+   become: true
+   become_user: root
+   gather_facts: no
+   tasks:
+     - shell: df -h "{{ item }}" | tail -n 1 | awk {'print $5 '}  | sed 's/%//g'
+       with_items:
+        - /
+        - /var
+        - /home
+       register: test
+
+     - debug:
+         msg: "{{ test.results|map(attribute='stdout')|list }}"
+#- name: Size is big
+#    shell: echo "tobig size "
+ #   when: test.results > 20

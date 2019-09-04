@@ -1,0 +1,13 @@
+---
+#tasks file for diskCheck
+#Print the Dictionary
+- debug: msg= "An item: {{ item }}"
+  with_items:
+     - "{{ ansible_mounts }}"
+    #msg: "{{ansible_mounts}}"
+#
+# Parsing through Variable Dictionary
+#- debug:
+ #   msg: "Mount Point {{item.mount}} is at {{item.block_used/item.block_total*100}} percent "
+ # loop: "{{ansible_mounts}}"
+#

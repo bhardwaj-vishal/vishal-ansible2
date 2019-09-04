@@ -1,0 +1,63 @@
+---
+- name: Ansible Variable Example Playbook
+  hosts: web01
+  #gather_facts: no
+  tasks:
+
+    - debug:
+       msg: "{{ansible_mounts}}"
+#
+## Parsing through Variable Dictionary
+    - debug:
+        msg: "Mount Point {{item.mount}} is consumed {{item.block_used/item.block_total*100}} percent "
+      loop: "{{ansible_mounts}}"
+     # command: touch /tmp/txt1
+      #when: item.block_used/item.block_total*100 >= 40.00
+      register: op
+      no_log: True
+  
+    #- debug: 
+     #   msg: "{{op.results}}"
+
+  #  - shell: touch /tmp/txt1
+  #    when: op >= 30.00
+  
+    - debug:
+        msg: "{{op.results|map(attribute='msg')|list}}"
+      register: op2
+
+    - debug: 
+        var:  op2 
+  
+    - shell: echo "hiii" > /tmp/abc.txt
+      when:  "'Mount' in op2.msg"
+
+    #  register: op2
+
+    #- name: 'Ensure that free space on {{ mountname }} is grater than 30%'
+     #- assert:
+      #   that: item.size_available > item.size_total|float * 0.3
+       #  msg: 'disk space has reached 70% threshold'
+       #when: item.mount == mountname
+       #with_items: '{{ ansible_mounts }}'
+   # - debug:
+   #     var: op2
+ 
+  
+#    - name: test
+ #     shell:  echo try
+  #    when: op is search("Mount")
+
+       #var: op.msg
+       #
+# To check set fact module
+
+#- set_fact: 
+ #  mount: "{{ ansible_mounts }}"
+                                                                                                                        
+#- set_fact: disk_usage= "{{ mount.size_total - mount.size_available }}"
+#- set_fact: disk_usage_ratio="{{ disk_usage|float / mount.size_total }}"
+#- set_fact: disk_usage_s="{{ (disk_usage|float / 1000000000) | round(1, 'common') }}GB"
+#- set_fact: disk_total_s="{{ (mount.size_total / 1000000000) | round(1, 'common') }}GB"
+#- set_fact: disk_usage_ratio_s="{{ 100 * (disk_usage_ratio|float) | round(1, 'common') }}%"
+#- set_fact: disk_limit_ratio_s="{{ (100 * disk_limit|float) |round }}%"
