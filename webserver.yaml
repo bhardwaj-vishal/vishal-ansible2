@@ -1,0 +1,54 @@
+---
+- hosts: web01
+  vars:
+    #db_user: vishal
+    #db_name: ansible-test
+  tasks:
+   - name: Webserver server installation
+     yum: name={{item}} state=present update_cache=yes
+     with_items:
+       - httpd
+       - httpd-tools
+       - mod_ssl
+
+     notify: web start
+ 
+#   - name: web restart
+ #    service: name=httpd state=started enabled=yes
+
+   - name: Create apache virtual host
+     template:
+       src: vhost.j2
+       dest: /etc/httpd/conf.d/vhost-{{ domain_name }}.conf
+  
+     notify: web restart
+
+   - name: Php installation on server
+     yum: name={{item}} state=present update_cache=yes
+     with_items:
+       - php70w
+       - php70w-cli
+       - php70w-common
+       - php70w-gd
+       - php70w-mbstring
+       - php70w-xml         
+     
+     notify: web restart
+
+   - name: Create web-root directory
+     file:
+       path: /var/www/html/{{ domain_name }}
+       state: directory
+
+   - name: Upload index.html and info.php files
+     template:
+       src: index.php.j2
+       dest: /var/www/html/{{ domain_name }}/index.php
+
+     notify: web restart
+
+  handlers:
+   - name: web start
+     service: name=httpd state=started enabled=yes 
+   - name: web restart
+     service: name=httpd state=restarted enabled=yes
