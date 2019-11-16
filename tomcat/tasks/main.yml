@@ -1,2 +1,46 @@
 ---
-# tasks file for tomcat
+# tasks file for apache
+
+#    timeout: 1
+- name: verify tomcat-server is listening on 8080
+  wait_for: port=8080 delay=2  timeout=5 
+  #msg: "Timeout waiting for 80 to respond"
+  ignore_errors: yes
+  register: port_check
+
+#- name: Try to restart httpd if not started
+ # service: name=httpd state=restarted
+  #when: port_check.failed == true
+
+#- debug:
+ #  var: telout1
+
+- name: Gathering service facts
+  service_facts:
+  register: output1
+
+- debug: 
+   msg: output1 {{ ansible_facts.services["tomcat.service"].state }}
+  register: output
+
+#- debug:
+ #  var: output
+
+
+#- debug:
+ #  msg: "httpd is not running"
+ # when: "output.find('v=' ~ unknown) == -1"
+ # notify: restart httpd
+
+#- name: get error log
+#  service: name=httpd state=restarted
+#  script: /root/script/script.sh
+#  register: output_log
+#  ignore_errors: yes
+#  copy:  content= "{{ output_log.stdout }}" dest= "/tmp/log.txt"
+#  delegate_to: localhost
+- import_tasks: tasks/sometasks.yml
+  #notify: restart httpd
+  #when: output.msg == 'output1 unknown'
+  when: output.msg == 'output1 unknown' or  port_check.failed == true
+

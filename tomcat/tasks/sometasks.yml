@@ -1,0 +1,32 @@
+---
+- name: run shell Script on remote host
+  script: /etc/ansible/tomcat/tasks/script.sh
+  register: output_log
+  ignore_errors: yes
+#
+- name: copy the output to a local file
+  copy:
+   content: "{{ output_log.stdout }}"
+   dest: "/tmp/tomcatlog.txt"
+  delegate_to: localhost
+ 
+- name: Try to restart httpd 
+  service: name=tomcat state=restarted
+ 
+- wait_for:
+    timeout: 3
+# Validating the Servcie Again
+
+- name: check httpd service facts
+  service_facts:
+  register: check
+
+- debug:
+   msg: check {{ ansible_facts.services["tomcat.service"].state }}
+  register: output2
+
+
+- local_action: shell echo "service restarted by ansibile" >> /tmp/tomcat1.txt
+  #notify: restart httpd
+  when: output2.msg == 'check running'
+#
