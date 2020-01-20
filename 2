@@ -1,0 +1,6 @@
+#!/bin/bash
+find /tmp -name "server.txt" -newermt '13 minutes ago'
+if [ $? -eq 0 ]
+then
+      echo "ansible cmnd"
+fi

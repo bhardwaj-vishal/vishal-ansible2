@@ -1,0 +1,63 @@
+---
+- hosts: twoway-mysql01 
+  vars:
+#    Database_user:
+ #   Database_name:
+  tasks:
+   - name: copy the database updates to the development server
+     copy: 
+       src: /database_schema/sample_risk_assessor.sql 
+       dest: /tmp/
+   #- name: Mysql server installation
+    # yum: name={{item}} state=present update_cache=yes
+    # with_items:
+     #  - mariadb-server
+      # - MySQL-python
+  
+  # - name: Service mysql start
+   #  service: name=mariadb state=restarted enabled=yes
+
+   #- name: Change root user password on first run
+    # mysql_user:
+     #  login_host: localhost
+      # login_user: root
+      # login_password: ''
+      # name: root
+      # password: Miami@2019
+      # priv: "*.*:ALL,GRANT"
+      # host: '%'
+
+   #- name: assigne myswl username in vairaoble
+    # delegate_to: localhost
+     #command: cat /root/file.txt
+     #register: new_name
+  # - name: show variable value
+   #  debug:
+    #   msg: "{{ new_name.stdout }}" 
+   #- name: show variable value
+    # debug:
+     #  msg: "{{ new_name.stdout_lines }}"
+   #- mysql_db:
+    #   login_host: 52.56.154.227
+     #  login_user: root
+      # login_password: Miami@2019
+      # name: "{{ Database_name }}"
+       #state: present
+   #- mysql_user:
+    #   login_host: 52.56.154.227
+     #  login_user: root
+      # login_password: Miami@2019
+       #name: "{{ Database_user }}"
+       #password: 12345
+       #name: "{{ new_name.stdout_lines }}"
+       #password: 12345
+      # priv: '{{ Database_name }}.*:ALL'
+      # host: '%'
+       #state: present 
+
+   - mysql_db:
+       name: "{{ Database_name }}"
+       state: import
+      # target: /database_schema/sample_risk_assessor.sql
+       #delegate_to: localhost
+       target: /tmp/sample_risk_assessor.sql

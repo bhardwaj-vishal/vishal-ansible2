@@ -19,6 +19,8 @@
 
 [webservers]
 web01 ansible_ssh_host=3.10.23.100
+twoway-web01 ansible_ssh_host=35.177.119.254
+twoway-mysql01 ansible_ssh_host=35.177.119.254
 ## alpha.example.org
 ## beta.example.org
 ## 192.168.1.100

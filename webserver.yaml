@@ -1,5 +1,5 @@
 ---
-- hosts: web01
+- hosts: twoway-web01
   vars:
     #db_user: vishal
     #db_name: ansible-test
@@ -35,6 +35,19 @@
      
      notify: web restart
 
+   - name: Create a ext4 filesystem on /dev/sdb1
+     filesystem:
+       fstype: ext4
+       dev: /dev/xvdf
+
+   - name: Mount up device by device name
+     mount:
+       path: /var/www/html/
+       src: /dev/xvdf
+       fstype: ext4
+       state: mounted
+
+
    - name: Create web-root directory
      file:
        path: /var/www/html/{{ domain_name }}
@@ -45,6 +58,10 @@
        src: index.php.j2
        dest: /var/www/html/{{ domain_name }}/index.php
 
+   - name: Copy document server code from ansible mster to remote machine.
+     synchronize:
+       src: /var/proddocumenet-data/
+       dest: /var/www/html/{{ domain_name }}/
      notify: web restart
 
   handlers:

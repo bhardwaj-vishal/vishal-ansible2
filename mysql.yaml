@@ -1,9 +1,13 @@
 ---
-- hosts: web01
+- hosts: twoway-mysql01 
   vars:
-    db_user: vishal
-    db_name: ansible-test
+#    Database_user:
+ #   Database_name:
   tasks:
+   - name: copy the database to the development server
+     copy: 
+       src: /database_schema/sample_risk_assessor.sql 
+       dest: /tmp/
    - name: Mysql server installation
      yum: name={{item}} state=present update_cache=yes
      with_items:
@@ -34,19 +38,26 @@
      debug:
        msg: "{{ new_name.stdout_lines }}"
    - mysql_db:
-       login_host: 3.10.23.100
+       login_host: 52.56.154.227
        login_user: root
        login_password: Miami@2019
-       name: "{{ db_name }}"
+       name: "{{ Database_name }}"
        state: present
    - mysql_user:
-       login_host: 3.10.23.100
+       login_host: 52.56.154.227
        login_user: root
        login_password: Miami@2019
-       name: "{{ var_name }}"
+       name: "{{ Database_user }}"
        password: 12345
        #name: "{{ new_name.stdout_lines }}"
        #password: 12345
-       priv: '{{ db_name }}.*:ALL'
+       priv: '{{ Database_name }}.*:ALL'
        host: '%'
        state: present 
+
+   - mysql_db:
+       name: "{{ Database_name }}"
+       state: import
+      # target: /database_schema/sample_risk_assessor.sql
+       #delegate_to: localhost
+       target: /tmp/sample_risk_assessor.sql
