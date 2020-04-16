@@ -1,9 +1,13 @@
-<VirtualHost *:{{ http_port }}>
-    ServerAdmin webmaster@{{ domain_name }}
-    ServerName {{ domain_name }}
-    ServerAlias www.{{ domain_name }}
-    DocumentRoot /var/www/html/{{ domain_name }}
+<VirtualHost *:80>
+    ServerAdmin webmaster@{{ Domain_name }}
+    ServerName {{ Domain_name }}
+    ServerAlias www.{{ Domain_name }}
+    DocumentRoot /var/www/html/{{ Domain_name }}
     DirectoryIndex index.php index.html index.htm index.nginx-debian.html
+  <Directory /var/www/html/{{ Domain_name }}/>
+     #   Options -Indexes +FollowSymLinks
+        AllowOverride All
+    </Directory>
    # ErrorLog ${APACHE_LOG_DIR}/error.log
     ErrorLog /var/log/httpd/error.log
    # CustomLog ${APACHE_LOG_DIR}/access.log combined

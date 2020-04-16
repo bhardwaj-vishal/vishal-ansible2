@@ -1,0 +1,26 @@
+---
+ - name: Tomcat role yaml file
+   hosts: webservers
+   vars_prompt:
+    - name: "vishal"
+      prompt: "Which version Do you want to install?"
+      private: no
+
+   tasks:
+    - name: Ansible prompt example.
+      debug:
+        msg: "{{ vishal }}"
+      
+    - name: Condition check
+      debug: 
+        msg: "Hello"
+    - name: check two when condition
+      shell: mkdir /tmp/vishal ; cp /etc/hosts /etc/hosts_backup 
+      #copy: remote_src=True src=/etc/hosts dest=/etc/hosts_bkp1
+      #command: "{{item}}"
+      #with_items:
+      # - cp /etc/hosts /etc/hosts_backup
+     #  - mkdir /tmp/vishal
+     #  - mkdir /tmp/aashnaa
+      when: target web01
+      when: vishal == "publish"

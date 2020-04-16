@@ -26,14 +26,12 @@
    - name: Php installation on server
      yum: name={{item}} state=present update_cache=yes
      with_items:
-       - php56w
-       - php56w-cli
-       - php56w-common
-       - php56w-gd
-       - php56w-mbstring
-       - php56w-xml
-       - php56w-pdo
-       - php56w-mysql         
+       - php70w
+       - php70w-cli
+       - php70w-common
+       - php70w-gd
+       - php70w-mbstring
+       - php70w-xml         
      
      notify: web restart
 

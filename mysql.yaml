@@ -26,6 +26,15 @@
        password: Miami@2019
        priv: "*.*:ALL,GRANT"
        host: '%'
+   #- name: Change root user password for localhost
+    # mysql_user:
+     #  login_host: localhost
+      # login_user: root
+      # login_password: ''
+      # name: root
+      # password: Miami@2019
+      # priv: "*.*:ALL,GRANT"
+      # host: 'localhost'
 
    - name: assigne myswl username in vairaoble
      delegate_to: localhost
@@ -38,17 +47,17 @@
      debug:
        msg: "{{ new_name.stdout_lines }}"
    - mysql_db:
-       login_host: 52.56.154.227
+       login_host: 34.245.63.103
        login_user: root
        login_password: Miami@2019
        name: "{{ Database_name }}"
        state: present
    - mysql_user:
-       login_host: 52.56.154.227
+       login_host: 34.245.63.103
        login_user: root
        login_password: Miami@2019
        name: "{{ Database_user }}"
-       password: 12345
+       password: "{{ Database_password }}"
        #name: "{{ new_name.stdout_lines }}"
        #password: 12345
        priv: '{{ Database_name }}.*:ALL'
